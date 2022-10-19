@@ -101,5 +101,7 @@ dist
 # TernJS port file
 .tern-port
 
-# vscode
+# development
 .vscode
+mongodb.conf
+local
