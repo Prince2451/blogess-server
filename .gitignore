@@ -105,3 +105,4 @@ dist
 .vscode
 mongodb.conf
 local
+thunder-tests
