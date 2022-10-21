@@ -1,12 +1,17 @@
 import "./dotenv";
-import express from "express";
+import express, { Router } from "express";
 import cors from "cors";
 import { connect } from "mongoose";
+import * as routes from "./routes";
 
 const app = express();
+const router = Router();
 
 app.use(express.json());
 app.use(cors());
+
+router.use(routes.publicRoutes);
+router.use(routes.privateRoutes);
 
 connect(process.env.MONGO_DB_URL_STRING)
   .then(() => {
