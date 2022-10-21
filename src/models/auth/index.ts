@@ -1,4 +1,4 @@
-import User from "./User";
-import RefreshToken from "./RefreshToken";
+import User from "./user";
+import RefreshToken from "./refreshToken";
 
 export { User, RefreshToken };
