@@ -3,6 +3,7 @@ import express, { Router } from "express";
 import cors from "cors";
 import { connect } from "mongoose";
 import * as routes from "./routes";
+import * as middlewares from "./middlewares";
 
 const app = express();
 const router = Router();
@@ -12,6 +13,8 @@ app.use(cors());
 
 router.use(routes.publicRoutes);
 router.use(routes.privateRoutes);
+
+app.use(middlewares.errorMiddleware);
 
 connect(process.env.MONGO_DB_URL_STRING)
   .then(() => {
