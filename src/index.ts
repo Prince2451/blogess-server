@@ -1,18 +1,17 @@
 import "./dotenv";
-import express, { Router } from "express";
+import express from "express";
 import cors from "cors";
 import { connect } from "mongoose";
 import * as routes from "./routes";
 import * as middlewares from "./middlewares";
 
 const app = express();
-const router = Router();
 
 app.use(express.json());
 app.use(cors());
 
-router.use(routes.publicRoutes);
-router.use(routes.privateRoutes);
+app.use(routes.publicRoutes);
+app.use(routes.privateRoutes);
 
 app.use(middlewares.errorMiddleware);
 
