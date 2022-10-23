@@ -5,10 +5,6 @@ import { createRequestHandler } from "../../utils/helpers";
 const publicRoutes = Router();
 const privateRoutes = Router();
 
-publicRoutes.post("/login", (...args) => {
-  createRequestHandler(auth.login, ...args).catch((err) => {
-    console.log(err);
-  });
-});
+publicRoutes.post("/login", createRequestHandler(auth.login));
 
 export { publicRoutes, privateRoutes };
