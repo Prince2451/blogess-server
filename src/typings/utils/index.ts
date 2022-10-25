@@ -1,5 +1,6 @@
-import { RequestHandler } from "express";
-import { auth } from "..";
+import type { RequestHandler } from "express";
+import type { auth } from "..";
+import type { ValidationChain } from "express-validator";
 
 interface PrivateRequestLocals {
   user: auth.User;
@@ -26,3 +27,5 @@ export type PublicRequestHandler<
   ReqQuery = qs.ParsedQs,
   Locals extends Record<string, any> = Record<string, any>
 > = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>;
+
+export type Validator = () => ValidationChain[] | ValidationChain;
