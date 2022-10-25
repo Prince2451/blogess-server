@@ -1,9 +1,18 @@
-import { RequestHandler } from "express";
-import { throwError } from "../../utils/helpers";
+import { PublicRequestHandler } from "../../typings";
 
-const login: RequestHandler = (req, res, next) => {
-  console.log("hello");
-  throwError(400, "world");
-};
+interface LoginReqBody {
+  email: string;
+  password: string;
+}
+interface LoginResBody {
+  refreshToken: string;
+  token: string;
+}
+
+const login: PublicRequestHandler<{}, LoginResBody, LoginReqBody> = (
+  req,
+  res,
+  next
+) => {};
 
 export { login };
