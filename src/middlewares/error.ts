@@ -1,12 +1,14 @@
 import { ErrorRequestHandler } from "express";
+import { HTTPError } from "../utils/helpers";
 
-const errorMiddleware: ErrorRequestHandler = (error, _, res, __) => {
-  const status = error.status || 500;
-  const message = error.message || "Something went wrong";
-  res.status(status).json({
-    status,
-    message,
-  });
+const errorMiddleware: ErrorRequestHandler = (error, _, res, next) => {
+  if (error instanceof HTTPError) {
+    return res.status(error.status).json({
+      message: error.message,
+      error: error.error,
+    });
+  }
+  next(error);
 };
 
 export default errorMiddleware;

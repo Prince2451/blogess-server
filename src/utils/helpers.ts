@@ -1,5 +1,19 @@
 import { RequestHandler } from "express";
 
+class HTTPError<T extends object = object> extends Error {
+  status: number;
+  error?: object;
+  constructor(
+    status: number,
+    message: string = "Something went wrong",
+    err?: T
+  ) {
+    super(message);
+    this.status = status;
+    if (err) this.error = err;
+  }
+}
+
 function createRequestHandler(
   fn: (...agrs: Parameters<RequestHandler>) => Promise<void> | void
 ): (...args: Parameters<RequestHandler>) => void {
@@ -15,4 +29,13 @@ function createRequestHandler(
   };
 }
 
-export { createRequestHandler };
+function throwError<T extends object = object>(
+  status: number,
+  message?: string,
+  error?: T
+): void {
+  const err = new HTTPError(status, message, error);
+  throw err;
+}
+
+export { createRequestHandler, throwError, HTTPError };
