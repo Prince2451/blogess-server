@@ -33,7 +33,7 @@ function throwError<T extends object = object>(
   status: number,
   message?: string,
   error?: T
-): void {
+): never {
   const err = new HTTPError(status, message, error);
   throw err;
 }
