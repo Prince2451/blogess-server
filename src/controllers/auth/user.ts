@@ -1,5 +1,5 @@
 import { PublicRequestHandler, Validator } from "../../typings";
-import { body, validationResult } from "express-validator";
+import { body } from "express-validator";
 
 interface LoginReqBody {
   email: string;
@@ -22,11 +22,6 @@ const login: PublicRequestHandler<
   LoginResBody | any,
   LoginReqBody
 > = async (req, res, next) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(422).json(errors.array({ onlyFirstError: true }));
-  }
-  console.log(errors);
   res.status(200);
 };
 
