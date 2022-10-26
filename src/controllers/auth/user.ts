@@ -1,5 +1,6 @@
 import { PublicRequestHandler, Validator } from "../../typings";
 import { body } from "express-validator";
+import { StatusCodes } from "http-status-codes";
 
 interface LoginReqBody {
   email: string;
@@ -17,12 +18,12 @@ const validators: Record<string, Validator> = {
   ],
 };
 
-const login: PublicRequestHandler<
-  {},
-  LoginResBody | any,
-  LoginReqBody
-> = async (req, res, next) => {
-  res.status(200);
+const login: PublicRequestHandler<{}, LoginResBody, LoginReqBody> = async (
+  req,
+  res,
+  next
+) => {
+  res.status(StatusCodes.OK).json();
 };
 
 export { login, validators };

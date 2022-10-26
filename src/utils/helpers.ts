@@ -1,5 +1,6 @@
 import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
+import { StatusCodes } from "http-status-codes";
 
 class HTTPError<T extends object = object> extends Error {
   status: number;
@@ -26,7 +27,9 @@ function createRequestHandler(
       if (options.handleErrors) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-          return res.status(422).json(errors.array({ onlyFirstError: true }));
+          return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json(errors.array({ onlyFirstError: true }));
         }
       }
       // will not be able to handle errors inside .then or .catch in promise chain
