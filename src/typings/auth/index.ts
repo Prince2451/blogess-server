@@ -6,7 +6,7 @@ export interface RefreshToken {
   token: string;
   expiresAt: Date;
   user: User | Types.ObjectId;
-  createdOn: Date;
+  createdAt: Date;
 }
 
 export interface User {

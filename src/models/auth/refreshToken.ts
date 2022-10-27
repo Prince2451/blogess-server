@@ -15,28 +15,27 @@ const refreshTokenSchema = new Schema<
   {},
   {},
   RefreshTokenStatics
->({
-  expiresAt: {
-    type: Date,
-    required: true,
+>(
+  {
+    expiresAt: {
+      type: Date,
+      required: true,
+    },
+    token: {
+      type: String,
+      required: true,
+    },
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: "User",
+    },
   },
-  token: {
-    type: String,
-    required: true,
-  },
-  createdOn: {
-    type: Date,
-    default: Date.now,
-  },
-  user: {
-    type: Schema.Types.ObjectId,
-    ref: "User",
-  },
-});
+  { timestamps: true }
+);
 
 refreshTokenSchema.pre("save", function (next) {
   this.expiresAt = new Date(
-    this.createdOn.valueOf() + REFRESH_TOKEN_EXPIRY_TIME
+    this.createdAt.valueOf() + REFRESH_TOKEN_EXPIRY_TIME
   );
   next();
 });
