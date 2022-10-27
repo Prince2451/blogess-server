@@ -43,7 +43,12 @@ const userSchema = new Schema<
 });
 
 userSchema.statics.hashPassword = async function (password) {
-  const salt = randomBytes(16).toString("hex");
+  const salt = await new Promise<string>((resolve, reject) => {
+    randomBytes(16, (err, buf) => {
+      if (err) return reject(err);
+      resolve(buf.toString("hex"));
+    });
+  });
   return await new Promise((resolve, reject) => {
     pbkdf2(password, salt, 1000, 64, "sha512", (err, hash) => {
       if (err) reject(err);
