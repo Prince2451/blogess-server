@@ -1,5 +1,6 @@
 import { pbkdf2, randomBytes } from "crypto";
 import { Model, model, Schema } from "mongoose";
+import { promisify } from "util";
 import { auth } from "../../typings";
 
 interface UserStatics {
@@ -43,32 +44,22 @@ const userSchema = new Schema<
 });
 
 userSchema.statics.hashPassword = async function (password) {
-  const salt = await new Promise<string>((resolve, reject) => {
-    randomBytes(16, (err, buf) => {
-      if (err) return reject(err);
-      resolve(buf.toString("hex"));
-    });
-  });
-  return await new Promise((resolve, reject) => {
-    pbkdf2(password, salt, 1000, 64, "sha512", (err, hash) => {
-      if (err) reject(err);
-      else {
-        resolve(hash.toString("hex") + "." + salt);
-      }
-    });
-  });
+  const salt = (await promisify(randomBytes)(16)).toString("hex");
+  return (
+    (await promisify(pbkdf2)(password, salt, 1000, 64, "sha512")).toString(
+      "hex"
+    ) +
+    "." +
+    salt
+  );
 };
 
 userSchema.statics.verifyPassword = async function (password, hasedPassword) {
   const [storedHash, salt] = hasedPassword.split(".");
-  return await new Promise((resolve, reject) => {
-    pbkdf2(password, salt, 1000, 64, "sha512", (err, hash) => {
-      if (err) reject(err);
-      else {
-        resolve(storedHash === hash.toString("hex"));
-      }
-    });
-  });
+  const hash = (
+    await promisify(pbkdf2)(password, salt, 1000, 64, "sha512")
+  ).toString("hex");
+  return storedHash === hash;
 };
 
 const User = model("User", userSchema);
