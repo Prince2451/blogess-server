@@ -3,5 +3,6 @@ declare namespace NodeJS {
     NODE_ENV: "development" | "production";
     PORT: string;
     MONGO_DB_URL_STRING: string;
+    JWT_SECRET: string;
   }
 }

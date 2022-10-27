@@ -1,3 +1,4 @@
 const REFRESH_TOKEN_EXPIRY_TIME = 1000 * 60 * 60 * 24 * 7; // 7 days
+const JWT_EXPIRY = 5 * 60;
 
-export { REFRESH_TOKEN_EXPIRY_TIME };
+export { REFRESH_TOKEN_EXPIRY_TIME, JWT_EXPIRY };
