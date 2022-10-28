@@ -15,33 +15,33 @@ const userSchema = new Schema<
   {},
   {},
   UserStatics
->({
-  firstName: {
-    type: String,
-    required: true,
+>(
+  {
+    firstName: {
+      type: String,
+      required: true,
+    },
+    lastName: {
+      type: String,
+    },
+    email: {
+      type: String,
+      required: true,
+    },
+    password: {
+      type: String,
+      required: true,
+    },
+    role: {
+      type: String,
+      enum: ["admin"],
+      required: true,
+    },
   },
-  lastName: {
-    type: String,
-    required: true,
-  },
-  email: {
-    type: String,
-    required: true,
-  },
-  password: {
-    type: String,
-    required: true,
-  },
-  phoneNumber: {
-    type: String,
-    required: true,
-  },
-  role: {
-    type: String,
-    enum: ["admin"],
-    required: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 userSchema.statics.hashPassword = async function (password) {
   const salt = (await promisify(randomBytes)(16)).toString("hex");

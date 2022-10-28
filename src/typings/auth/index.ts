@@ -13,7 +13,8 @@ export interface User {
   firstName: string;
   lastName?: string;
   email: string;
-  phoneNumber?: string;
   role: UserRole;
   password: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
