@@ -3,12 +3,9 @@ import { body } from "express-validator";
 import { StatusCodes } from "http-status-codes";
 import { RefreshToken, User } from "../../models/auth";
 import { throwError } from "../../utils/helpers";
-import { Secret, sign, SignOptions } from "jsonwebtoken";
-import { JWT_EXPIRY } from "../../utils/constants";
-import { promisify } from "util";
 import { Types } from "mongoose";
 
-const validators: Record<"login" | "register", Validator> = {
+const validators: Record<"login" | "register" | "token", Validator> = {
   login: () => [
     body("email", "Valid email address is required").isEmail(),
     body("password", "Password is required").notEmpty().isString(),
@@ -29,6 +26,9 @@ const validators: Record<"login" | "register", Validator> = {
       minUppercase: 1,
       minSymbols: 1,
     }),
+  ],
+  token: () => [
+    body("refreshToken", "Valid refreshToken is required").exists().isString(),
   ],
 };
 
@@ -57,16 +57,7 @@ const login: PublicRequestHandler<{}, LoginResBody, LoginReqBody> = async (
     token: RefreshToken.createToken(),
     user,
   });
-  const token = await promisify<object, Secret, SignOptions, string>(sign)(
-    {
-      email: user.email,
-      id: user._id,
-    },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: JWT_EXPIRY,
-    }
-  );
+  const token = await User.createAccessToken(user._id, user.email);
   await refreshToken.save();
 
   res.status(StatusCodes.OK).json({
@@ -111,4 +102,34 @@ const register: PublicRequestHandler<
   });
 };
 
-export { login, register, validators };
+interface TokenReqBody {
+  refreshToken: string;
+}
+interface TokenResBody {
+  token: string;
+}
+
+const token: PublicRequestHandler<{}, TokenResBody, TokenReqBody> = async (
+  req,
+  res
+) => {
+  const refreshToken = await RefreshToken.findOne({
+    token: req.body.refreshToken,
+  }).populate("user");
+  const isTokenValid = refreshToken && RefreshToken.verifyToken(refreshToken);
+  if (!isTokenValid) {
+    if (refreshToken) {
+      // refresh token exists but is expired
+      // removing extra token
+      await refreshToken.remove();
+    }
+    throwError(StatusCodes.BAD_REQUEST, "Invalid Token");
+  }
+  const user = await User.findById(refreshToken.user);
+  if (!user) throwError(StatusCodes.BAD_REQUEST, "User not available");
+  const token = await User.createAccessToken(user._id, user.email);
+
+  return res.status(StatusCodes.OK).json({ token });
+};
+
+export { login, register, token, validators };

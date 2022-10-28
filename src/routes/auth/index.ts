@@ -15,5 +15,10 @@ publicRoutes.post(
   auth.validators.register(),
   createRequestHandler(auth.register)
 );
+publicRoutes.post(
+  "/token",
+  auth.validators.token(),
+  createRequestHandler(auth.token)
+);
 
 export { publicRoutes, privateRoutes };
