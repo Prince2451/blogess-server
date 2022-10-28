@@ -12,6 +12,9 @@ app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 
 app.use(routes.publicRoutes);
+
+app.use(middlewares.authMiddleware);
+
 app.use(routes.privateRoutes);
 
 app.use(middlewares.errorMiddleware);
