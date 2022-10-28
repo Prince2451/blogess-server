@@ -1,6 +1,6 @@
-import { RequestHandler } from "express";
 import { validationResult } from "express-validator";
 import { StatusCodes } from "http-status-codes";
+import { PrivateRequestHandler, PublicRequestHandler } from "../typings";
 
 class HTTPError<T extends object = object> extends Error {
   status: number;
@@ -16,20 +16,31 @@ class HTTPError<T extends object = object> extends Error {
   }
 }
 
-function createRequestHandler(
-  fn: (...agrs: Parameters<RequestHandler>) => Promise<void> | void,
+function createRequestHandler<
+  T extends PublicRequestHandler | PrivateRequestHandler =
+    | PublicRequestHandler
+    | PrivateRequestHandler
+>(
+  fn: T,
   options: {
     handleErrors?: boolean;
   } = { handleErrors: true }
-): (...args: Parameters<RequestHandler>) => void {
+): (
+  ...args: Parameters<
+    T extends PrivateRequestHandler
+      ? PrivateRequestHandler
+      : PublicRequestHandler
+  >
+) => Promise<void> {
   return async function (req, res, next) {
     try {
       if (options.handleErrors) {
         const errors = validationResult(req);
         if (!errors.isEmpty()) {
-          return res
+          res
             .status(StatusCodes.BAD_REQUEST)
             .json(errors.array({ onlyFirstError: true }));
+          return;
         }
       }
       // will not be able to handle errors inside .then or .catch in promise chain
