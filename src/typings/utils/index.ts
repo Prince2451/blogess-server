@@ -1,9 +1,8 @@
 import type { RequestHandler } from "express";
-import type { auth } from "..";
 import type { ValidationChain } from "express-validator";
 
 interface PrivateRequestLocals {
-  user: auth.User;
+  user: { id: string; email: string };
 }
 
 export type PrivateRequestHandler<
