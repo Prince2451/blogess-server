@@ -123,7 +123,7 @@ const token: PublicRequestHandler<{}, TokenResBody, TokenReqBody> = async (
       // removing extra token
       await refreshToken.remove();
     }
-    throwError(StatusCodes.BAD_REQUEST, "Invalid Token");
+    throwError(StatusCodes.UNAUTHORIZED, "Invalid Token");
   }
   const user = await User.findById(refreshToken.user);
   if (!user) throwError(StatusCodes.BAD_REQUEST, "User not available");
