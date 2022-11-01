@@ -71,7 +71,6 @@ interface RegisterReqBody {
   password: string;
   firstName: string;
   lastName?: string;
-  phoneNumber: string;
 }
 interface RegisterResBody
   extends Omit<auth.User, "password" | "_id" | "createdAt" | "updatedAt"> {
