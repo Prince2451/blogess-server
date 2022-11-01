@@ -115,7 +115,7 @@ const token: PublicRequestHandler<{}, TokenResBody, TokenReqBody> = async (
 ) => {
   const refreshToken = await RefreshToken.findOne({
     token: req.body.refreshToken,
-  }).populate("user");
+  });
   const isTokenValid = refreshToken && RefreshToken.verifyToken(refreshToken);
   if (!isTokenValid) {
     if (refreshToken) {
