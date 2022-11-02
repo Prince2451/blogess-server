@@ -20,5 +20,6 @@ publicRoutes.post(
   auth.validators.token(),
   createRequestHandler(auth.token)
 );
+privateRoutes.get("/user", createRequestHandler(auth.getUser));
 
 export { publicRoutes, privateRoutes };

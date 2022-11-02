@@ -1,4 +1,9 @@
-import { auth, PublicRequestHandler, Validator } from "../../typings";
+import {
+  auth,
+  PrivateRequestHandler,
+  PublicRequestHandler,
+  Validator,
+} from "../../typings";
 import { body } from "express-validator";
 import { StatusCodes } from "http-status-codes";
 import { RefreshToken, User } from "../../models/auth";
@@ -131,4 +136,21 @@ const token: PublicRequestHandler<{}, TokenResBody, TokenReqBody> = async (
   return res.status(StatusCodes.OK).json({ token });
 };
 
-export { login, register, token, validators };
+interface GetUserResBody extends Omit<auth.User, "password"> {
+  id: Types.ObjectId;
+}
+const getUser: PrivateRequestHandler<{}, GetUserResBody> = async (req, res) => {
+  const user = await User.findById(res.locals.user.id);
+  if (!user) throwError(StatusCodes.BAD_REQUEST, "User Doesn't exists");
+  res.status(StatusCodes.OK).json({
+    id: user._id,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    email: user.email,
+    role: user.role,
+    createdAt: user.createdAt,
+    updatedAt: user.updatedAt,
+  });
+};
+
+export { login, register, token, getUser, validators };
