@@ -33,3 +33,8 @@ export interface MongooseTimestamp {
   createdAt: Date;
   updatedAt: Date;
 }
+
+export type Optional<T extends object, K extends keyof T> = Partial<
+  Pick<T, K>
+> &
+  Omit<T, K>;
