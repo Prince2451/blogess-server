@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { auth } from "../../controllers";
+import { auth, validators } from "../../controllers";
 import { createRequestHandler } from "../../utils/helpers";
 
 const publicRoutes = Router();
@@ -7,17 +7,17 @@ const privateRoutes = Router();
 
 publicRoutes.post(
   "/login",
-  auth.validators.login(),
+  validators.auth.login(),
   createRequestHandler(auth.login)
 );
 publicRoutes.post(
   "/register",
-  auth.validators.register(),
+  validators.auth.register(),
   createRequestHandler(auth.register)
 );
 publicRoutes.post(
   "/token",
-  auth.validators.token(),
+  validators.auth.token(),
   createRequestHandler(auth.token)
 );
 privateRoutes.get("/user", createRequestHandler(auth.getUser));
