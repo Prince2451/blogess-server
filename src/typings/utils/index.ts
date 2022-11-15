@@ -28,3 +28,8 @@ export type PublicRequestHandler<
 > = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>;
 
 export type Validator = () => ValidationChain[] | ValidationChain;
+
+export interface MongooseTimestamp {
+  createdAt: Date;
+  updatedAt: Date;
+}
