@@ -1,12 +1,11 @@
-import { Types } from "mongoose";
-import { MongooseTimestamp } from "../utils";
+import { DocRef, MongooseTimestamp } from "../utils";
 
 export type UserRole = "admin";
 
 export interface RefreshToken {
   token: string;
   expiresAt: Date;
-  user: User | Types.ObjectId;
+  user: DocRef<User>;
   createdAt: Date;
 }
 
