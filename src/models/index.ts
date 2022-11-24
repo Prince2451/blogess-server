@@ -1,1 +1,2 @@
-export * as auth from "./auth/index";
+export * as auth from "./auth";
+export * as posts from "./posts";
