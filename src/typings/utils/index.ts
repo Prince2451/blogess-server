@@ -6,17 +6,27 @@ interface PrivateRequestLocals {
   user: { id: string; email: string };
 }
 
+export interface QueryParameters {
+  [key: string]:
+    | string
+    | string[]
+    | number
+    | number[]
+    | qs.ParsedQs
+    | qs.ParsedQs[];
+}
+
 export type PrivateRequestHandler<
   P = Record<string, string>,
   ResBody = any,
   ReqBody = any,
-  ReqQuery = qs.ParsedQs,
+  ReqQuery = QueryParameters,
   Locals extends Record<string, any> = Record<string, any>
 > = RequestHandler<
   P,
   ResBody,
   ReqBody,
-  ReqQuery,
+  Partial<ReqQuery>,
   Locals & PrivateRequestLocals
 >;
 
@@ -24,9 +34,9 @@ export type PublicRequestHandler<
   P = Record<string, string>,
   ResBody = any,
   ReqBody = any,
-  ReqQuery = qs.ParsedQs,
+  ReqQuery = QueryParameters,
   Locals extends Record<string, any> = Record<string, any>
-> = RequestHandler<P, ResBody, ReqBody, ReqQuery, Locals>;
+> = RequestHandler<P, ResBody, ReqBody, Partial<ReqQuery>, Locals>;
 
 export type Validator = () => ValidationChain[] | ValidationChain;
 
