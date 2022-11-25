@@ -4,17 +4,17 @@ import * as controllers from "./index";
 const validators: Record<keyof typeof controllers, Validator> = {
   getPost: () => [
     query("page")
-      .exists()
-      .withMessage("'page' key is required")
+      .optional()
       .isNumeric({ no_symbols: true })
       .withMessage("'page' key must be a valid number")
-      .toInt(),
+      .toInt()
+      .default(1),
     query("limit")
-      .exists()
-      .withMessage("'limit' key is required")
+      .optional()
       .isNumeric({ no_symbols: true })
       .withMessage("'limit' key must be a valid number")
-      .toInt(),
+      .toInt()
+      .default(10),
   ],
 };
 
