@@ -2,11 +2,11 @@ import {
   auth,
   PrivateRequestHandler,
   PublicRequestHandler,
+  WithDocId,
 } from "../../typings";
 import { StatusCodes } from "http-status-codes";
 import { RefreshToken, User } from "../../models/auth";
 import { throwError } from "../../utils/helpers";
-import { Types } from "mongoose";
 
 interface LoginReqBody {
   email: string;
@@ -48,10 +48,9 @@ interface RegisterReqBody {
   firstName: string;
   lastName?: string;
 }
-interface RegisterResBody
-  extends Omit<auth.User, "password" | "_id" | "createdAt" | "updatedAt"> {
-  id: Types.ObjectId;
-}
+type RegisterResBody = WithDocId<
+  Omit<auth.User, "password" | "_id" | "createdAt" | "updatedAt">
+>;
 const register: PublicRequestHandler<
   {},
   RegisterResBody,
@@ -107,9 +106,7 @@ const token: PublicRequestHandler<{}, TokenResBody, TokenReqBody> = async (
   return res.status(StatusCodes.OK).json({ token });
 };
 
-interface GetUserResBody extends Omit<auth.User, "password"> {
-  id: Types.ObjectId;
-}
+type GetUserResBody = WithDocId<Omit<auth.User, "password">>;
 const getUser: PrivateRequestHandler<{}, GetUserResBody> = async (req, res) => {
   const user = await User.findById(res.locals.user.id);
   if (!user) throwError(StatusCodes.BAD_REQUEST, "User Doesn't exists");
