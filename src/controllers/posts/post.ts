@@ -59,17 +59,12 @@ const createPost: PrivateRequestHandler<
     ...req.body,
     user: res.locals.user.id,
   });
+  const { _id, user, ...sendData } = newPost.toObject({ versionKey: false });
+
   res.status(StatusCodes.CREATED).json({
-    id: newPost._id,
-    title: newPost.title,
-    content: newPost.content,
-    coverImage: newPost.coverImage,
-    createdAt: newPost.createdAt,
-    description: newPost.description,
-    tags: newPost.tags,
-    updatedAt: newPost.updatedAt,
+    id: _id,
+    ...sendData,
     categories: newPost.categories,
-    slug: newPost.slug,
   });
 };
 

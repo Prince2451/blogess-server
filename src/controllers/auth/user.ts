@@ -113,14 +113,11 @@ interface GetUserResBody extends Omit<auth.User, "password"> {
 const getUser: PrivateRequestHandler<{}, GetUserResBody> = async (req, res) => {
   const user = await User.findById(res.locals.user.id);
   if (!user) throwError(StatusCodes.BAD_REQUEST, "User Doesn't exists");
+  const { _id, password, ...sendData } = user.toObject({ versionKey: false });
+
   res.status(StatusCodes.OK).json({
     id: user._id,
-    firstName: user.firstName,
-    lastName: user.lastName,
-    email: user.email,
-    role: user.role,
-    createdAt: user.createdAt,
-    updatedAt: user.updatedAt,
+    ...sendData,
   });
 };
 
