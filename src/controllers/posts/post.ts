@@ -57,12 +57,17 @@ const createPost: PrivateRequestHandler<
     throwError(StatusCodes.CONFLICT, "Post with same title already exists");
   const newPost = await Post.create({
     ...req.body,
-    user: res.locals.user,
+    user: res.locals.user.id,
   });
-  const { _id, user, ...sendData } = newPost.toObject();
   res.status(StatusCodes.CREATED).json({
-    ...sendData,
-    id: _id,
+    id: newPost._id,
+    title: newPost.title,
+    content: newPost.content,
+    coverImage: newPost.coverImage,
+    createdAt: newPost.createdAt,
+    description: newPost.description,
+    tags: newPost.tags,
+    updatedAt: newPost.updatedAt,
     categories: newPost.categories,
   });
 };

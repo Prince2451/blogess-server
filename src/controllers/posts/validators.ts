@@ -46,9 +46,11 @@ const validators: Record<keyof typeof controllers, Validator> = {
     body("categories")
       .exists()
       .withMessage("'categories' is required")
-      .isArray({ max: 1 })
-      .isString()
+      .isArray({ min: 1, max: 1 })
       .withMessage("'categories' must be tuple containing one element"),
+    body("categories.*")
+      .isString()
+      .withMessage("'categories' must have string"),
     body("tags")
       .exists()
       .withMessage("'tags' is required")
