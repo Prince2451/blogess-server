@@ -59,3 +59,6 @@ export interface PaginatedResponse<T extends any> {
   currentPage: number;
   currentLength: number;
 }
+
+export type WithDocId<T extends any> = T & { id: Types.ObjectId };
+export type WithMdbDocId<T extends any> = T & { _id: Types.ObjectId };
