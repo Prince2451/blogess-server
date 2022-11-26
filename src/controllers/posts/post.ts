@@ -42,7 +42,7 @@ const getPost: PrivateRequestHandler<
   });
 };
 
-type CreatePostReqBody = Omit<posts.Post, "user">;
+type CreatePostReqBody = Omit<posts.Post, "user" | "slug">;
 type CreatePostResBody = WithDocId<Omit<posts.Post, "user">>;
 
 const createPost: PrivateRequestHandler<
@@ -69,6 +69,7 @@ const createPost: PrivateRequestHandler<
     tags: newPost.tags,
     updatedAt: newPost.updatedAt,
     categories: newPost.categories,
+    slug: newPost.slug,
   });
 };
 

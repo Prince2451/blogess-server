@@ -7,5 +7,6 @@ export interface Post extends MongooseTimestamp {
   categories: [string];
   tags: string[];
   coverImage: string;
+  slug: string;
   user: DocRef<Post>;
 }

@@ -1,5 +1,6 @@
 import { model, Schema, Types } from "mongoose";
 import { posts } from "../../typings";
+import slugify from "slugify";
 
 const postSchema = new Schema<posts.Post>(
   {
@@ -24,6 +25,7 @@ const postSchema = new Schema<posts.Post>(
         required: true,
       },
     ],
+    slug: { type: String },
     tags: [
       {
         type: String,
@@ -39,6 +41,11 @@ const postSchema = new Schema<posts.Post>(
     timestamps: true,
   }
 );
+
+postSchema.pre("save", function (next) {
+  this.slug = slugify(this.title);
+  next();
+});
 
 const Post = model("Post", postSchema);
 
