@@ -26,23 +26,24 @@ const validators: Record<keyof typeof controllers, Validator> = {
         max: 64,
       })
       .notEmpty({ ignore_whitespace: true })
-      .withMessage(
-        "'title' must be greater than 0 and less than 64 characters"
-      ),
+      .withMessage("'title' must be greater than 0 and less than 64 characters")
+      .trim(),
     body("description")
       .exists()
       .withMessage("'description' is required")
       .isString()
       .withMessage("'description' must be a valid string")
       .notEmpty({ ignore_whitespace: true })
-      .withMessage("'description' must be greater than 0 characters"),
+      .withMessage("'description' must be greater than 0 characters")
+      .trim(),
     body("content")
       .exists()
       .withMessage("'content' is required")
       .isString()
       .withMessage("'content' must be a valid string")
       .notEmpty({ ignore_whitespace: true })
-      .withMessage("'content' must be greater than 0 characters"),
+      .withMessage("'content' must be greater than 0 characters")
+      .trim(),
     body("categories")
       .exists()
       .withMessage("'categories' is required")
