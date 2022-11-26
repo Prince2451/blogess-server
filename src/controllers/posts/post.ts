@@ -5,7 +5,9 @@ import {
   PaginatedResponse,
   PrivateRequestHandler,
   QueryParameters,
+  WithDocId,
 } from "../../typings";
+import { throwError } from "../../utils/helpers";
 
 interface GetPostReqQuery extends QueryParameters {
   page: number;
@@ -40,4 +42,29 @@ const getPost: PrivateRequestHandler<
   });
 };
 
-export { getPost };
+type CreatePostReqBody = Omit<posts.Post, "user">;
+type CreatePostResBody = WithDocId<Omit<posts.Post, "user">>;
+
+const createPost: PrivateRequestHandler<
+  {},
+  CreatePostResBody,
+  CreatePostReqBody
+> = async (req, res) => {
+  const doesTitleExists = Boolean(
+    await Post.findOne({ title: req.body.title }).count()
+  );
+  if (doesTitleExists)
+    throwError(StatusCodes.CONFLICT, "Post with same title already exists");
+  const newPost = await Post.create({
+    ...req.body,
+    user: res.locals.user,
+  });
+  const { _id, user, ...sendData } = newPost.toObject();
+  res.status(StatusCodes.CREATED).json({
+    ...sendData,
+    id: _id,
+    categories: newPost.categories,
+  });
+};
+
+export { getPost, createPost };
