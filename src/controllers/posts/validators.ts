@@ -9,10 +9,10 @@ const validators: Record<keyof typeof controllers, Validator> = {
       .withMessage("'page' key must be a valid number")
       .toInt()
       .default(1),
-    query("limit")
+    query("size")
       .optional()
       .isNumeric({ no_symbols: true })
-      .withMessage("'limit' key must be a valid number")
+      .withMessage("'size' key must be a valid number")
       .toInt()
       .default(10),
   ],

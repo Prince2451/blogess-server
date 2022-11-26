@@ -24,17 +24,17 @@ const getPost: PrivateRequestHandler<
   req.query.page = req.query.page ?? 1;
   req.query.size = req.query.size ?? 10;
   const query = Post.find({
-    user: res.locals.user,
+    user: res.locals.user.id,
   })
     .sort({ updatedAt: 1 })
     .skip(req.query.size * (req.query.page - 1))
     .limit(req.query.page);
 
-  const data = await query.exec();
+  const data = await query.clone().exec();
   const count = await query.count();
 
   res.status(StatusCodes.OK).json({
-    currentLength: req.query.size,
+    currentLength: Math.min(req.query.size, data.length),
     currentPage: req.query.page,
     data,
     totalLength: count,
