@@ -110,11 +110,11 @@ const updatePost: PrivateRequestHandler<
   });
 };
 
-interface UpdatePostParams extends Record<string, string> {
+interface DeletePostReqParams extends Record<string, string> {
   id: string;
 }
 
-const deletePost: PrivateRequestHandler<UpdatePostParams> = async (
+const deletePost: PrivateRequestHandler<DeletePostReqParams> = async (
   req,
   res
 ) => {
