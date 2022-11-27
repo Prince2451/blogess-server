@@ -14,5 +14,10 @@ privateRoutes.post(
   validators.posts.createPost(),
   createRequestHandler(posts.createPost)
 );
+privateRoutes.put(
+  "/:id",
+  validators.posts.updatePost(),
+  createRequestHandler(posts.updatePost)
+);
 
 export { privateRoutes };

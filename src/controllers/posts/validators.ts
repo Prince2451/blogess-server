@@ -1,4 +1,4 @@
-import { body, query } from "express-validator";
+import { body, param, query } from "express-validator";
 import { Validator } from "../../typings";
 import * as controllers from "./index";
 const validators: Record<keyof typeof controllers, Validator> = {
@@ -63,6 +63,10 @@ const validators: Record<keyof typeof controllers, Validator> = {
       .withMessage("'coverImage' is required")
       .isURL()
       .withMessage("'coverImage' must be a URL"),
+  ],
+  updatePost: () => [
+    ...validators.createPost().map((validator) => validator.optional()),
+    param("id").exists().isMongoId().withMessage("':id' is not a valid Id"),
   ],
 };
 

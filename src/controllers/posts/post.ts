@@ -66,4 +66,48 @@ const createPost: PrivateRequestHandler<
   });
 };
 
-export { getPost, createPost };
+type UpdatePostReqBody = Partial<Omit<posts.Post, "user" | "slug">>;
+type UpdatePostResBody = WithDocId<Omit<posts.Post, "user">>;
+interface UpdatePostParams extends Record<string, string> {
+  id: string;
+}
+
+const updatePost: PrivateRequestHandler<
+  UpdatePostParams,
+  UpdatePostResBody,
+  UpdatePostReqBody
+> = async (req, res) => {
+  // setting up type for 'id' existense
+  // but it will always exists as it is validated in validator
+  if (!req.params.id)
+    throwError(StatusCodes.NOT_FOUND, "Post with this id does not exists");
+  const post = await Post.findOne({
+    _id: req.params.id,
+    user: res.locals.user.id,
+  });
+  if (!post)
+    throwError(StatusCodes.NOT_FOUND, "Post with this id does not exists");
+  if (req.body.title) {
+    const existingPost = await Post.exists({
+      title: req.body.title,
+      _id: { $ne: req.params.id },
+    });
+    if (existingPost)
+      throwError(StatusCodes.CONFLICT, "Post with same title already exists");
+    post.title = req.body.title;
+  }
+  if (req.body.description) post.description = req.body.description;
+  if (req.body.content) post.content = req.body.content;
+  if (req.body.categories) post.categories = req.body.categories;
+  if (req.body.tags) post.tags = req.body.tags;
+  if (req.body.coverImage) post.coverImage = req.body.coverImage;
+  await post.save();
+  const { _id, user, ...sendData } = post.toObject({ versionKey: false });
+  res.status(StatusCodes.OK).json({
+    id: _id,
+    ...sendData,
+    categories: post.categories,
+  });
+};
+
+export { getPost, createPost, updatePost };
