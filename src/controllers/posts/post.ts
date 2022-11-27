@@ -71,12 +71,12 @@ const createPost: PrivateRequestHandler<
 
 type UpdatePostReqBody = Partial<Omit<posts.Post, "user" | "slug">>;
 type UpdatePostResBody = WithDocId<Omit<posts.Post, "user">>;
-interface UpdatePostParams extends Record<string, string> {
+interface UpdatePostReqParams extends Record<string, string> {
   id: string;
 }
 
 const updatePost: PrivateRequestHandler<
-  UpdatePostParams,
+  UpdatePostReqParams,
   UpdatePostResBody,
   UpdatePostReqBody
 > = async (req, res) => {
