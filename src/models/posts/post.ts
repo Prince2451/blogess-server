@@ -35,6 +35,7 @@ const postSchema = new Schema<posts.Post>(
     user: {
       type: Types.ObjectId,
       required: true,
+      select: false,
     },
     isDeleted: { type: Boolean, default: false, select: false },
   },

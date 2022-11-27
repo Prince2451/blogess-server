@@ -19,5 +19,10 @@ privateRoutes.put(
   validators.posts.updatePost(),
   createRequestHandler(posts.updatePost)
 );
+privateRoutes.delete(
+  "/:id",
+  validators.posts.deletePost(),
+  createRequestHandler(posts.deletePost)
+);
 
 export { privateRoutes };

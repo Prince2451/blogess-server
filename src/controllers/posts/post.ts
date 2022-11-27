@@ -107,4 +107,24 @@ const updatePost: PrivateRequestHandler<
   });
 };
 
-export { getPost, createPost, updatePost };
+interface UpdatePostParams extends Record<string, string> {
+  id: string;
+}
+
+const deletePost: PrivateRequestHandler<UpdatePostParams> = async (
+  req,
+  res
+) => {
+  const post = await Post.findOneAndUpdate(
+    { user: res.locals.user.id, _id: req.params.id, isDeleted: false },
+    { isDeleted: true }
+  );
+  if (!post)
+    throwError(StatusCodes.NOT_FOUND, "Post with this id does not exists");
+
+  res.status(StatusCodes.NO_CONTENT).json({
+    message: "Post deleted successfully",
+  });
+};
+
+export { getPost, createPost, updatePost, deletePost };

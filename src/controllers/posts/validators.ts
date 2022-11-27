@@ -68,6 +68,9 @@ const validators: Record<keyof typeof controllers, Validator> = {
     ...validators.createPost().map((validator) => validator.optional()),
     param("id").exists().isMongoId().withMessage("':id' is not a valid Id"),
   ],
+  deletePost: () => [
+    param("id").exists().isMongoId().withMessage("':id' is not a valid Id"),
+  ],
 };
 
 export default validators;
