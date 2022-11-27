@@ -23,7 +23,7 @@ export type PrivateRequestHandler<
   ReqQuery = QueryParameters,
   Locals extends Record<string, any> = Record<string, any>
 > = RequestHandler<
-  P,
+  Partial<P>,
   ResBody,
   ReqBody,
   Partial<ReqQuery>,
@@ -36,9 +36,9 @@ export type PublicRequestHandler<
   ReqBody = any,
   ReqQuery = QueryParameters,
   Locals extends Record<string, any> = Record<string, any>
-> = RequestHandler<P, ResBody, ReqBody, Partial<ReqQuery>, Locals>;
+> = RequestHandler<Partial<P>, ResBody, ReqBody, Partial<ReqQuery>, Locals>;
 
-export type Validator = () => ValidationChain[] | ValidationChain;
+export type Validator = () => ValidationChain[];
 
 export interface MongooseTimestamp {
   createdAt: Date;
@@ -60,5 +60,5 @@ export interface PaginatedResponse<T extends any> {
   currentLength: number;
 }
 
-export type WithDocId<T extends any> = T & { id: Types.ObjectId };
+export type WithDocId<T extends any = object> = T & { id: Types.ObjectId };
 export type WithMdbDocId<T extends any> = T & { _id: Types.ObjectId };
