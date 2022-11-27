@@ -13,7 +13,9 @@ interface GetPostReqQuery extends QueryParameters {
   page: number;
   size: number;
 }
-type GetPostResBody = PaginatedResponse<posts.Post>;
+type GetPostResBody = PaginatedResponse<
+  WithDocId<Omit<posts.Post, "user" | "isDeleted" | "_id">>
+>;
 
 const getPost: PrivateRequestHandler<
   {},
@@ -23,10 +25,8 @@ const getPost: PrivateRequestHandler<
 > = async (req, res) => {
   req.query.page = req.query.page ?? 1;
   req.query.size = req.query.size ?? 10;
-  const query = Post.find({
-    user: res.locals.user.id,
-  })
-    .sort({ updatedAt: 1 })
+  const query = Post.find({ user: res.locals.user.id, isDeleted: false })
+    .sort({ updatedAt: -1 })
     .skip(req.query.size * (req.query.page - 1))
     .limit(req.query.size);
 
@@ -36,7 +36,10 @@ const getPost: PrivateRequestHandler<
   res.status(StatusCodes.OK).json({
     currentLength: Math.min(req.query.size, data.length),
     currentPage: req.query.page,
-    data,
+    data: data.map((post) => {
+      const { _id, ...sendData } = post.toObject({ versionKey: false });
+      return { id: _id, ...sendData, categories: post.categories };
+    }),
     totalLength: count,
     totalPage: Math.ceil(count / req.query.size),
   });
