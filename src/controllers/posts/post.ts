@@ -130,4 +130,31 @@ const deletePost: PrivateRequestHandler<DeletePostReqParams> = async (
   });
 };
 
-export { getPost, createPost, updatePost, deletePost };
+type GetPostDetailsResBody = WithDocId<
+  Omit<posts.Post, "user" | "isDeleted" | "_id">
+>;
+interface GetPostDetailsReqParams extends Record<string, string> {
+  id: string;
+}
+
+const getPostDetails: PrivateRequestHandler<
+  GetPostDetailsReqParams,
+  GetPostDetailsResBody
+> = async (req, res) => {
+  const post = await Post.findOne({
+    _id: req.params.id,
+    user: res.locals.user.id,
+    isDeleted: false,
+  });
+  if (!post)
+    throwError(StatusCodes.NOT_FOUND, "Post with this id does not exists");
+
+  const { _id, user, ...sendData } = post.toObject({ versionKey: false });
+  res.status(StatusCodes.OK).json({
+    id: _id,
+    ...sendData,
+    categories: post.categories,
+  });
+};
+
+export { getPost, createPost, updatePost, deletePost, getPostDetails };

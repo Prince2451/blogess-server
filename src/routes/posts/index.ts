@@ -14,6 +14,11 @@ privateRoutes.post(
   validators.posts.createPost(),
   createRequestHandler(posts.createPost)
 );
+privateRoutes.get(
+  "/:id",
+  validators.posts.getPostDetails(),
+  createRequestHandler(posts.getPostDetails)
+);
 privateRoutes.put(
   "/:id",
   validators.posts.updatePost(),
