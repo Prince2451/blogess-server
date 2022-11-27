@@ -45,6 +45,10 @@ export interface MongooseTimestamp {
   updatedAt: Date;
 }
 
+export interface SoftDeletableDoc {
+  isDeleted: boolean;
+}
+
 export type Optional<T extends object, K extends keyof T> = Partial<
   Pick<T, K>
 > &
