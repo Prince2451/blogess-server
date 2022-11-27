@@ -6,7 +6,7 @@ const validators: Optional<
   "getUser"
 > = {
   login: () => [
-    body("email", "Valid email address is required").isEmail(),
+    body("email", "Valid email address is required").isEmail().normalizeEmail(),
     body("password", "Password is required").notEmpty().isString(),
   ],
   register: () => [
