@@ -1,6 +1,6 @@
-import { DocRef, MongooseTimestamp } from "../utils";
+import { DocRef, MongooseTimestamp, SoftDeletableDoc } from "../utils";
 
-export interface Post extends MongooseTimestamp {
+export interface Post extends MongooseTimestamp, SoftDeletableDoc {
   title: string;
   description: string;
   content: string;
