@@ -50,9 +50,7 @@ const createPost: PrivateRequestHandler<
   CreatePostResBody,
   CreatePostReqBody
 > = async (req, res) => {
-  const doesTitleExists = Boolean(
-    await Post.findOne({ title: req.body.title }).count()
-  );
+  const doesTitleExists = Boolean(await Post.exists({ title: req.body.title }));
   if (doesTitleExists)
     throwError(StatusCodes.CONFLICT, "Post with same title already exists");
   const newPost = await Post.create({
