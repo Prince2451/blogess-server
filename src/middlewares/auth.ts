@@ -39,4 +39,7 @@ const authMiddleware: PrivateRequestHandler = async (req, res, next) => {
   next();
 };
 
-export default createRequestHandler(authMiddleware);
+export default createRequestHandler(authMiddleware, {
+  handleErrors: false,
+  onlyMatchedData: false,
+});

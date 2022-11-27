@@ -1,4 +1,4 @@
-import { validationResult } from "express-validator";
+import { matchedData, validationResult } from "express-validator";
 import { StatusCodes } from "http-status-codes";
 import { PrivateRequestHandler, PublicRequestHandler } from "../typings";
 
@@ -24,7 +24,8 @@ function createRequestHandler<
   fn: T,
   options: {
     handleErrors?: boolean;
-  } = { handleErrors: true }
+    onlyMatchedData?: boolean;
+  } = { handleErrors: true, onlyMatchedData: true }
 ): (
   ...args: Parameters<
     T extends PrivateRequestHandler
@@ -42,6 +43,20 @@ function createRequestHandler<
             .json(errors.array({ onlyFirstError: true }));
           return;
         }
+      }
+      if (options.onlyMatchedData) {
+        req.query = matchedData(req, {
+          locations: ["query"],
+        });
+        req.body = matchedData(req, {
+          locations: ["body"],
+        });
+        req.params = matchedData(req, {
+          locations: ["params"],
+        });
+        req.cookies = matchedData(req, {
+          locations: ["cookies"],
+        });
       }
       // will not be able to handle errors inside .then or .catch in promise chain
       // only returned promises will be handled
