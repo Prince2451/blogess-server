@@ -5,16 +5,16 @@ const validators: Record<keyof typeof controllers, Validator> = {
   getPost: () => [
     query("page")
       .optional()
-      .isNumeric({ no_symbols: true })
-      .withMessage("'page' key must be a valid number")
-      .toInt()
-      .default(1),
+      .default(1)
+      .isInt({ min: 1 })
+      .withMessage("'page' key must be a valid natural number")
+      .toInt(),
     query("size")
       .optional()
-      .isNumeric({ no_symbols: true })
-      .withMessage("'size' key must be a valid number")
-      .toInt()
-      .default(10),
+      .default(10)
+      .isInt({ min: 1 })
+      .withMessage("'size' key must be a valid natural number")
+      .toInt(),
   ],
   createPost: () => [
     body("title")
