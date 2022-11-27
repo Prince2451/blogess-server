@@ -28,7 +28,7 @@ const getPost: PrivateRequestHandler<
   })
     .sort({ updatedAt: 1 })
     .skip(req.query.size * (req.query.page - 1))
-    .limit(req.query.page);
+    .limit(req.query.size);
 
   const data = await query.clone().exec();
   const count = await query.count();
