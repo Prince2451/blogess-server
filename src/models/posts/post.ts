@@ -36,6 +36,7 @@ const postSchema = new Schema<posts.Post>(
       type: Types.ObjectId,
       required: true,
     },
+    isDeleted: { type: Boolean, default: false, select: false },
   },
   {
     timestamps: true,
