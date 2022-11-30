@@ -1,5 +1,8 @@
 import type { RequestHandler } from "express";
-import type { ValidationChain } from "express-validator";
+import type {
+  ValidationChain,
+  ValidationError as ValidatorValidationError,
+} from "express-validator";
 import { Types } from "mongoose";
 
 interface PrivateRequestLocals {
@@ -66,3 +69,5 @@ export interface PaginatedResponse<T extends any> {
 
 export type WithDocId<T extends any = object> = T & { id: Types.ObjectId };
 export type WithMdbDocId<T extends any> = T & { _id: Types.ObjectId };
+
+export type ValidationError = ValidatorValidationError;
