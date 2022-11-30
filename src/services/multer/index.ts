@@ -1,6 +1,7 @@
 import multer from "multer";
 import path from "path";
 import slugify from "slugify";
+import { imageMimeTypes } from "../../utils/mimeTypes";
 
 const diskStorage = multer.diskStorage({
   destination: path.join(__dirname, "assets", "images"),
@@ -13,8 +14,15 @@ const diskStorage = multer.diskStorage({
   },
 });
 
-const upload = multer({
+const imageUpload = multer({
   storage: diskStorage,
+  fileFilter(req, file, callback) {
+    if (!imageMimeTypes.find((type) => type === file.mimetype)) {
+      callback(new Error(`Only ${imageMimeTypes.join()} are accepted`));
+    } else {
+      callback(null, true);
+    }
+  },
 });
 
-export { upload };
+export { imageUpload };
