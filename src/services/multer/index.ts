@@ -6,8 +6,8 @@ import { imageMimeTypes } from "../../utils/mimeTypes";
 const diskStorage = multer.diskStorage({
   destination: path.join(__dirname, "assets", "images"),
   filename(_, file, callback) {
-    const fieldName = slugify(file.fieldname);
-    const uniqueSuffix = `${fieldName}-${Date.now()}-${Math.round(
+    const fileName = slugify(file.filename);
+    const uniqueSuffix = `${fileName}-${Date.now()}-${Math.round(
       Math.random() * 1e2
     )}`;
     callback(null, uniqueSuffix);
