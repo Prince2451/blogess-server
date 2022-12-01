@@ -16,7 +16,7 @@ const diskStorage = multer.diskStorage({
 
 const imageUpload = multer({
   storage: diskStorage,
-  fileFilter(req, file, callback) {
+  fileFilter(_, file, callback) {
     if (!imageMimeTypes.find((type) => type === file.mimetype)) {
       callback(new Error(`Only ${imageMimeTypes.join()} are accepted`));
     } else {
