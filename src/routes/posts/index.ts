@@ -30,6 +30,11 @@ privateRoutes.delete(
   validators.posts.deletePost(),
   createRequestHandler(posts.deletePost)
 );
-privateRoutes.post("/cover-image", imageUpload.single("image"));
+privateRoutes.post(
+  "/cover-image",
+  imageUpload.single("image"),
+  validators.posts.uploadCoverImage(),
+  createRequestHandler(posts.uploadCoverImage)
+);
 
 export { privateRoutes };

@@ -74,6 +74,12 @@ const validators: Record<keyof typeof controllers, Validator> = {
   getPostDetails: () => [
     param("id").exists().isMongoId().withMessage("':id' is not a valid Id"),
   ],
+  uploadCoverImage: () => [
+    body("image")
+      .exists()
+      .isObject()
+      .withMessage("'image' field must be a file"),
+  ],
 };
 
 export default validators;
