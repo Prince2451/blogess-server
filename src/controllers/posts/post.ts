@@ -7,7 +7,7 @@ import {
   QueryParameters,
   WithDocId,
 } from "../../typings";
-import { throwError } from "../../utils/helpers";
+import { throwError } from "../../utils/helpers/request";
 
 interface GetPostReqQuery extends QueryParameters {
   page: number;

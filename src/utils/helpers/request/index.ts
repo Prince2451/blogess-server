@@ -1,6 +1,6 @@
 import { matchedData, validationResult } from "express-validator";
 import { StatusCodes } from "http-status-codes";
-import { PrivateRequestHandler, PublicRequestHandler } from "../typings";
+import { PrivateRequestHandler, PublicRequestHandler } from "../../../typings";
 
 class HTTPError<T extends object = object> extends Error {
   status: number;

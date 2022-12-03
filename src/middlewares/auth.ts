@@ -8,7 +8,7 @@ import {
 } from "jsonwebtoken";
 import { promisify } from "util";
 import { PrivateRequestHandler } from "../typings";
-import { createRequestHandler, throwError } from "../utils/helpers";
+import { createRequestHandler, throwError } from "../utils/helpers/request";
 
 const authMiddleware: PrivateRequestHandler = async (req, res, next) => {
   const token = req.headers.authorization?.substring(7);

@@ -1,7 +1,7 @@
 import { PrivateRequestHandler } from "../../typings";
 import sharp from "sharp";
 import { StatusCodes } from "http-status-codes";
-import { throwError } from "../../utils/helpers";
+import { throwError } from "../../utils/helpers/request";
 
 interface UploadCoverImageReqBody {
   image: string;

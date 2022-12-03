@@ -3,7 +3,7 @@ import multer from "multer";
 import path from "path";
 import slugify from "slugify";
 import { promisify } from "util";
-import { imageMimeTypes } from "../../utils/mimeTypes";
+import { imageMimeTypes } from "../../mimeTypes";
 
 const diskStorage = multer.diskStorage({
   destination: path.join(process.cwd(), "public", "assets", "images"),

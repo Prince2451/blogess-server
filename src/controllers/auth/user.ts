@@ -6,7 +6,7 @@ import {
 } from "../../typings";
 import { StatusCodes } from "http-status-codes";
 import { RefreshToken, User } from "../../models/auth";
-import { throwError } from "../../utils/helpers";
+import { throwError } from "../../utils/helpers/request";
 
 interface LoginReqBody {
   email: string;

@@ -1,7 +1,7 @@
 import { ErrorRequestHandler } from "express";
 import { StatusCodes } from "http-status-codes";
 import multer from "multer";
-import { HTTPError } from "../utils/helpers";
+import { HTTPError } from "../utils/helpers/request";
 
 const errorMiddleware: ErrorRequestHandler = (error, _, res, next) => {
   if (error instanceof HTTPError) {
