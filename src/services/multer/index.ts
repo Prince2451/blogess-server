@@ -4,12 +4,13 @@ import slugify from "slugify";
 import { imageMimeTypes } from "../../utils/mimeTypes";
 
 const diskStorage = multer.diskStorage({
-  destination: path.join(__dirname, "assets", "images"),
+  destination: path.join(process.cwd(), "public", "assets", "images"),
   filename(_, file, callback) {
-    const fileName = slugify(file.filename);
+    const filePath = path.parse(file.originalname);
+    const fileName = slugify(filePath.name);
     const uniqueSuffix = `${fileName}-${Date.now()}-${Math.round(
       Math.random() * 1e2
-    )}`;
+    )}${filePath.ext}`;
     callback(null, uniqueSuffix);
   },
 });
