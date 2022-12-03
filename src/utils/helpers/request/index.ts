@@ -16,7 +16,7 @@ class HTTPError<T extends object = object> extends Error {
   }
 }
 
-function createRequestHandler<
+function requestHandler<
   T extends PublicRequestHandler | PrivateRequestHandler =
     | PublicRequestHandler
     | PrivateRequestHandler
@@ -77,4 +77,4 @@ function throwError<T extends object = object>(
   throw err;
 }
 
-export { createRequestHandler, throwError, HTTPError };
+export { requestHandler, throwError, HTTPError };
