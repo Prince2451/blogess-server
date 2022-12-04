@@ -16,8 +16,14 @@ const postSchema = new Schema<posts.Post>(
       required: true,
     },
     coverImage: {
-      type: String,
-      required: true,
+      url: {
+        type: String,
+        required: true,
+      },
+      base64url: {
+        type: String,
+        required: true,
+      },
     },
     categories: [
       {

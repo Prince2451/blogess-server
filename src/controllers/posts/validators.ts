@@ -58,11 +58,17 @@ const validators: Record<keyof typeof controllers, Validator> = {
       .isArray()
       .withMessage("'tags' must an array"),
     body("tags.*").isString().withMessage("'tags' must be array of strings"),
-    body("coverImage")
+    body("coverImage").isObject().withMessage("'coverImage' must be an object"),
+    body("coverImage.url")
+      .exists()
+      .withMessage("'coverImage.url' is required")
+      .isURL()
+      .withMessage("'coverImage.url' must be a URL"),
+    body("coverImage.base64url")
       .exists()
       .withMessage("'coverImage' is required")
-      .isURL()
-      .withMessage("'coverImage' must be a URL"),
+      .isBase64()
+      .withMessage("'coverImage.base64url' must be a base64 string"),
   ],
   updatePost: () => [
     ...validators.createPost().map((validator) => validator.optional()),

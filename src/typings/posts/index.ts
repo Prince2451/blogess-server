@@ -6,7 +6,10 @@ export interface Post extends MongooseTimestamp, SoftDeletableDoc {
   content: string;
   categories: [string];
   tags: string[];
-  coverImage: string;
+  coverImage: {
+    url: string;
+    base64url: string;
+  };
   slug: string;
   user: DocRef<Post>;
 }
