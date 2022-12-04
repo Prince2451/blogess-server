@@ -2,7 +2,14 @@ import { Router } from "express";
 import { posts, validators } from "../../controllers";
 import helpers from "../../utils/helpers";
 
+const publicRoutes = Router();
 const privateRoutes = Router();
+
+publicRoutes.get(
+  "/public/:slug",
+  validators.posts.getPublicPost(),
+  helpers.request.requestHandler(posts.getPublicPost)
+);
 
 privateRoutes.get(
   "/",
@@ -36,4 +43,4 @@ privateRoutes.post(
   helpers.request.requestHandler(posts.uploadCoverImage)
 );
 
-export { privateRoutes };
+export { privateRoutes, publicRoutes };

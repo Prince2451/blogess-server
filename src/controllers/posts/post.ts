@@ -6,6 +6,7 @@ import {
   PrivateRequestHandler,
   QueryParameters,
   WithDocId,
+  PublicRequestHandler,
 } from "../../typings";
 import { throwError } from "../../utils/helpers/request";
 
@@ -157,4 +158,32 @@ const getPostDetails: PrivateRequestHandler<
   });
 };
 
-export { getPost, createPost, updatePost, deletePost, getPostDetails };
+interface GetPublicReqParams extends Record<string, string> {
+  slug: string;
+}
+type GetPublicReqResBody = WithDocId<
+  Omit<posts.Post, "user" | "isDeleted" | "_id">
+>;
+
+const getPublicPost: PublicRequestHandler<
+  GetPublicReqParams,
+  GetPublicReqResBody
+> = async (req, res) => {
+  const post = await Post.findOne({ slug: req.params.slug, isDeleted: false });
+  if (!post) throwError(StatusCodes.NOT_FOUND, "Post doesn't exists");
+  const { _id, user, categories, ...sendData } = post.toObject({
+    versionKey: false,
+  });
+  res
+    .status(StatusCodes.OK)
+    .json({ id: _id, ...sendData, categories: post.categories });
+};
+
+export {
+  getPost,
+  createPost,
+  updatePost,
+  deletePost,
+  getPostDetails,
+  getPublicPost,
+};

@@ -6,6 +6,7 @@ const publicRoutes = Router();
 const privateRoutes = Router();
 
 publicRoutes.use("/auth", auth.publicRoutes);
+publicRoutes.use("/posts", posts.publicRoutes);
 privateRoutes.use("/auth", auth.privateRoutes);
 privateRoutes.use("/posts", posts.privateRoutes);
 

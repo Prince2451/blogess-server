@@ -80,6 +80,12 @@ const validators: Record<keyof typeof controllers, Validator> = {
   getPostDetails: () => [
     param("id").exists().isMongoId().withMessage("':id' is not a valid Id"),
   ],
+  getPublicPost: () => [
+    param("slug")
+      .exists()
+      .isString()
+      .withMessage("':slug' must be a valid string"),
+  ],
   uploadCoverImage: () => [
     body("image")
       .exists()
