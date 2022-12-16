@@ -62,13 +62,14 @@ const validators: Record<keyof typeof controllers, Validator> = {
     body("coverImage.url")
       .exists()
       .withMessage("'coverImage.url' is required")
-      .isURL()
+      .isURL({ host_whitelist: [process.env.STATIC_URL_HOST] })
       .withMessage("'coverImage.url' must be a URL"),
     body("coverImage.base64url")
       .exists()
       .withMessage("'coverImage' is required")
-      .isBase64()
-      .withMessage("'coverImage.base64url' must be a base64 string"),
+      .not()
+      .isURL()
+      .withMessage("'coverImage.base64url' must be a string"),
   ],
   updatePost: () => [
     ...validators.createPost().map((validator) => validator.optional()),
