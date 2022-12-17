@@ -5,13 +5,13 @@ import { URL } from "url";
 import { promisify } from "util";
 import { STATIC_FILES_BASE_PATH, STATIC_FILES_ROUTE } from "../../constants";
 
-function errorHandler(multer: multer.Multer): {
+function fileHandler(multer: multer.Multer): {
   any: () => RequestHandler;
   single: (fieldName: string) => RequestHandler;
   fields: (fields: readonly multer.Field[]) => RequestHandler;
   array: (fieldName: string, maxCount?: number | undefined) => RequestHandler;
 } {
-  function withErrorHandling<T extends (...args: any[]) => RequestHandler>(
+  function withFileHandler<T extends (...args: any[]) => RequestHandler>(
     fn: T
   ): (...args: Parameters<T>) => RequestHandler {
     return function (...args) {
@@ -43,11 +43,11 @@ function errorHandler(multer: multer.Multer): {
     };
   }
   return {
-    any: withErrorHandling(multer.any),
-    single: withErrorHandling(multer.single),
-    fields: withErrorHandling(multer.fields),
-    array: withErrorHandling(multer.array),
+    any: withFileHandler(multer.any),
+    single: withFileHandler(multer.single),
+    fields: withFileHandler(multer.fields),
+    array: withFileHandler(multer.array),
   };
 }
 
-export default errorHandler;
+export default fileHandler;
