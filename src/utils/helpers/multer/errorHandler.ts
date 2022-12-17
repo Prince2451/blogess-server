@@ -1,6 +1,9 @@
 import { RequestHandler } from "express";
 import multer from "multer";
+import path from "path";
+import { URL } from "url";
 import { promisify } from "util";
+import { STATIC_FILES_BASE_PATH, STATIC_FILES_ROUTE } from "../../constants";
 
 function errorHandler(multer: multer.Multer): {
   any: () => RequestHandler;
@@ -18,6 +21,14 @@ function errorHandler(multer: multer.Multer): {
           const fieldName =
             args.length && typeof args[0] === "string" ? args[0] : null;
           if (req.file && fieldName) {
+            const url = new URL(
+              path.join(
+                STATIC_FILES_ROUTE,
+                path.relative(path.join(STATIC_FILES_BASE_PATH), req.file.path)
+              ),
+              process.env.SERVER_NAME
+            );
+            req.file.url = url.toString();
             // populated by single()
             req.body[fieldName] = req.file;
           } else if (req.files && Array.isArray(req.files) && fieldName) {

@@ -5,5 +5,6 @@ declare namespace NodeJS {
     MONGO_DB_URL_STRING: string;
     JWT_SECRET: string;
     STATIC_URL_HOST: string;
+    SERVER_NAME: string;
   }
 }

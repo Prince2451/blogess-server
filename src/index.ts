@@ -4,11 +4,13 @@ import cors from "cors";
 import { connect } from "mongoose";
 import * as routes from "./routes";
 import * as middlewares from "./middlewares";
+import { STATIC_FILES_BASE_PATH, STATIC_FILES_ROUTE } from "./utils/constants";
 
 const app = express();
 
 app.use(express.json());
 app.use(cors());
+app.use(STATIC_FILES_ROUTE, express.static(STATIC_FILES_BASE_PATH));
 app.use(express.urlencoded({ extended: false }));
 
 app.use(routes.publicRoutes);
